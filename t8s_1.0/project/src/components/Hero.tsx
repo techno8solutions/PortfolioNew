@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, CheckCircle, Zap, Target, Globe } from 'lucide-react';
+import { ArrowRight, CheckCircle, ShieldCheck, Sparkles, Globe } from 'lucide-react';
 
 const Hero: React.FC = () => {
   const scrollToContact = () => {
@@ -10,75 +10,118 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800"></div>
-      
-      {/* Animated background elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300 dark:bg-blue-600 rounded-full mix-blend-multiply dark:mix-blend-overlay filter blur-xl opacity-30 animate-pulse"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-300 dark:bg-purple-600 rounded-full mix-blend-multiply dark:mix-blend-overlay filter blur-xl opacity-30 animate-pulse animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-emerald-300 dark:bg-emerald-600 rounded-full mix-blend-multiply dark:mix-blend-overlay filter blur-xl opacity-30 animate-pulse animation-delay-4000"></div>
+    <section className="relative overflow-hidden">
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-24 left-10 w-72 h-72 bg-blue-400/25 dark:bg-blue-500/25 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-36 right-10 w-72 h-72 bg-violet-400/25 dark:bg-violet-500/25 rounded-full blur-3xl animate-pulse animation-delay-2000" />
+        <div className="absolute -bottom-8 left-24 w-72 h-72 bg-emerald-400/20 dark:bg-emerald-500/20 rounded-full blur-3xl animate-pulse animation-delay-4000" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center">
-          {/* Main headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6">
-            <span className="block">Elevate Your</span>
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-600 bg-clip-text text-transparent">
-              Digital Presence
-            </span>
-          </h1>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-7">
+            <div className="inline-flex items-center gap-2 rounded-full px-4 py-2 glass">
+              <Sparkles className="h-4 w-4 text-emerald-400" />
+              <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                Premium digital studio for modern brands
+              </span>
+            </div>
 
-          <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
-            Your Complete Digital Partner - From Web Development to AI Solutions, We Deliver Excellence Across 8 Core Services
-          </p>
+            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 dark:text-white">
+              Build a <span className="text-gradient">classy, high‑converting</span> digital presence.
+            </h1>
 
-          {/* Key benefits */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12 max-w-5xl mx-auto">
-            {[
-              { icon: Globe, text: "8 Comprehensive Digital Solutions Under One Roof" },
-              { icon: Target, text: "End-to-End Development from Frontend to Backend" },
-              { icon: Zap, text: "Modern Technologies with Future-Ready Approach" }
-            ].map((benefit, index) => (
-              <div key={index} className="flex items-center space-x-3 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 hover:bg-white/70 dark:hover:bg-gray-800/70 transition-all duration-300">
-                <CheckCircle className="h-6 w-6 text-emerald-500 flex-shrink-0" />
-                <span className="text-gray-700 dark:text-gray-300 text-left">{benefit.text}</span>
-              </div>
-            ))}
+            <p className="mt-5 text-lg sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
+              Websites, mobile apps, marketing, and AI automation — delivered with clean design, strong performance, and a reliable launch process.
+            </p>
+
+            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={scrollToContact}
+                className="group inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 shadow-lg shadow-blue-500/20 dark:shadow-blue-400/10 transition-all duration-300"
+              >
+                Start a project
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-0.5 transition-transform duration-300" />
+              </button>
+
+              <button
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-semibold text-slate-900 dark:text-white glass glass-hover"
+              >
+                View case studies
+              </button>
+            </div>
+
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
+              {[
+                { icon: Globe, text: '8 integrated solutions' },
+                { icon: ShieldCheck, text: 'Secure & scalable builds' },
+                { icon: CheckCircle, text: 'Polished delivery & support' },
+              ].map((benefit, index) => (
+                <div key={index} className="glass rounded-2xl px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <benefit.icon className="h-5 w-5 text-emerald-400" />
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                      {benefit.text}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <button 
-              onClick={scrollToContact}
-              className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            >
-              <span>Start Your Project</span>
-              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
-            <button 
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
-              View Our Work
-            </button>
-          </div>
-
-          {/* Stats */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
-            {[
-              { number: "8", label: "Core Solutions" },
-              { number: "98%", label: "Client Satisfaction" },
-              { number: "150+", label: "Projects Delivered" },
-              { number: "24/7", label: "Support Available" }
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">{stat.number}</div>
-                <div className="text-gray-600 dark:text-gray-400">{stat.label}</div>
+          <div className="lg:col-span-5">
+            <div className="glass-strong rounded-3xl p-6 sm:p-8 shadow-glass">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-sm font-semibold text-slate-600 dark:text-slate-300">
+                    Delivery snapshot
+                  </div>
+                  <div className="mt-1 text-2xl font-semibold text-slate-900 dark:text-white">
+                    Designed to feel premium
+                  </div>
+                </div>
+                <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-600 to-violet-600" />
               </div>
-            ))}
+
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                {[
+                  { number: '8', label: 'Core solutions' },
+                  { number: '150+', label: 'Projects shipped' },
+                  { number: '98%', label: 'Client satisfaction' },
+                  { number: '24/7', label: 'Support options' },
+                ].map((stat, index) => (
+                  <div key={index} className="glass rounded-2xl p-4">
+                    <div className="text-2xl font-semibold text-slate-900 dark:text-white">
+                      {stat.number}
+                    </div>
+                    <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 glass rounded-2xl p-4">
+                <div className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                  Typical outcomes
+                </div>
+                <div className="mt-2 grid grid-cols-1 gap-2 text-sm text-slate-600 dark:text-slate-300">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-400" />
+                    Faster load time and stronger SEO foundations
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-400" />
+                    Clean UI with consistent brand polish
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-400" />
+                    Conversion‑focused sections and CTAs
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

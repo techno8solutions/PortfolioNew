@@ -2,6 +2,13 @@ import React from 'react';
 import { Globe, Smartphone, TrendingUp, Instagram, Code, Database, Palette, Bot } from 'lucide-react';
 
 const Services: React.FC = () => {
+  const scrollToContact = () => {
+    const element = document.getElementById('contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const services = [
     {
       id: 1,
@@ -78,73 +85,99 @@ const Services: React.FC = () => {
   ];
 
   return (
-    <section id="services" className="py-20 bg-white dark:bg-gray-900">
+    <section id="services" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
-        <div className="text-center mb-16">
-          <div className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-            Our 8 Core Solutions
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center rounded-full px-4 py-2 glass">
+            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+              Our 8 core solutions
+            </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Complete Digital Services
+          <h2 className="mt-6 text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">
+            Everything you need to grow online.
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            From concept to deployment, we provide end-to-end digital solutions that transform your business and drive growth
+          <p className="mt-5 text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+            Choose a single service or combine multiple solutions into a complete digital package — designed, built, and shipped with premium polish.
           </p>
         </div>
 
         {/* Services grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service) => (
-            <div key={service.id} className="group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 dark:border-gray-700">
-              {/* Service number and icon */}
-              <div className="flex items-center justify-between mb-6">
-                <div className={`w-12 h-12 bg-gradient-to-r ${service.gradient} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                  <service.icon className="h-6 w-6 text-white" />
-                </div>
-                <div className="text-2xl font-bold text-gray-300 dark:text-gray-600">
-                  0{service.id}
-                </div>
-              </div>
-              
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-                {service.title}
-              </h3>
-              
-              <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed text-sm">
-                {service.description}
-              </p>
-
-              {/* Features */}
-              <div className="space-y-2 mb-6">
-                {service.features.slice(0, 3).map((feature, featureIndex) => (
-                  <div key={featureIndex} className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                    <div className={`w-1.5 h-1.5 bg-gradient-to-r ${service.gradient} rounded-full mr-2`}></div>
-                    {feature}
+            <div key={service.id} className="group glass glass-hover rounded-3xl overflow-hidden">
+              <div className="relative h-36">
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="h-full w-full object-cover opacity-90"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
+                <div className="absolute top-4 left-4 flex items-center gap-3">
+                  <div className={`w-11 h-11 bg-gradient-to-r ${service.gradient} rounded-2xl flex items-center justify-center shadow-lg`}>
+                    <service.icon className="h-5 w-5 text-white" />
                   </div>
-                ))}
+                  <div className="text-white/80 text-sm font-semibold">
+                    0{service.id}
+                  </div>
+                </div>
               </div>
 
-              <button className={`w-full bg-gradient-to-r ${service.gradient} hover:shadow-lg text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 transform hover:-translate-y-1 text-sm`}>
-                Learn More
-              </button>
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                  {service.title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                  {service.description}
+                </p>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {service.features.slice(0, 3).map((feature) => (
+                    <span
+                      key={feature}
+                      className="rounded-full px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-200 glass"
+                    >
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+
+                <button
+                  onClick={scrollToContact}
+                  className={`mt-6 w-full rounded-2xl bg-gradient-to-r ${service.gradient} text-white px-4 py-3 text-sm font-semibold transition-all duration-300 hover:shadow-lg`}
+                >
+                  Get a quote
+                </button>
+              </div>
             </div>
           ))}
         </div>
 
         {/* CTA Section */}
         <div className="mt-20 text-center">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-white">
-            <h3 className="text-3xl font-bold mb-6">Ready to Transform Your Business?</h3>
-            <p className="text-xl leading-relaxed max-w-3xl mx-auto mb-8">
-              Let's discuss which of our 8 solutions can help accelerate your digital growth. Our expert team is ready to bring your vision to life.
+          <div className="glass-strong rounded-[2rem] p-10 sm:p-12 shadow-glass">
+            <h3 className="text-3xl font-semibold text-slate-900 dark:text-white">
+              Ready to transform your business?
+            </h3>
+            <p className="mt-4 text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+              Tell us what you’re building and we’ll recommend the best mix of services — along with a clear plan, timeline, and pricing.
             </p>
-            <button 
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg"
-            >
-              Start Your Project Today
-            </button>
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
+                onClick={scrollToContact}
+                className="inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 shadow-lg shadow-blue-500/20 dark:shadow-blue-400/10 transition-all duration-300"
+              >
+                Book a consultation
+              </button>
+              <button
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-semibold text-slate-900 dark:text-white glass glass-hover"
+              >
+                See recent work
+              </button>
+            </div>
           </div>
         </div>
       </div>

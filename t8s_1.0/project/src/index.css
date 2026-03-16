@@ -1,3 +1,63 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  :root.dark {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-dvh bg-slate-50 text-slate-900 antialiased dark:bg-[#070A12] dark:text-slate-100;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply border border-white/20 bg-white/10 shadow-[0_12px_40px_-24px_rgba(0,0,0,0.45)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06];
+  }
+
+  .glass-strong {
+    @apply border border-white/25 bg-white/20 shadow-[0_18px_60px_-32px_rgba(0,0,0,0.55)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/[0.08];
+  }
+
+  .glass-hover {
+    @apply transition-all duration-300 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/15 hover:shadow-[0_18px_60px_-32px_rgba(0,0,0,0.55)] dark:hover:border-white/15;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-500 via-violet-500 to-emerald-400 bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .bg-radial-fade {
+    background-image:
+      radial-gradient(1200px 600px at 15% 10%, rgba(59, 130, 246, 0.22), transparent 60%),
+      radial-gradient(900px 500px at 80% 20%, rgba(168, 85, 247, 0.18), transparent 55%),
+      radial-gradient(900px 520px at 50% 100%, rgba(16, 185, 129, 0.16), transparent 55%);
+  }
+}

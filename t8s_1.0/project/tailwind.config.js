@@ -4,6 +4,9 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      boxShadow: {
+        glass: '0 18px 60px -32px rgba(0,0,0,0.55)',
+      },
       colors: {
         primary: {
           50: '#eff6ff',

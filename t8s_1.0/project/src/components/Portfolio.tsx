@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import { ExternalLink, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const Portfolio: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
+  const scrollToContact = () => {
+    const element = document.getElementById('contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const projects = [
     {
@@ -79,15 +85,20 @@ const Portfolio: React.FC = () => {
     : projects.filter(project => project.category === selectedCategory);
 
   return (
-    <section id="projects" className="py-20 bg-gray-50 dark:bg-gray-800/50">
+    <section id="projects" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Success Stories Across All 8 Solutions
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center rounded-full px-4 py-2 glass">
+            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+              Selected work
+            </span>
+          </div>
+          <h2 className="mt-6 text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">
+            Case studies with premium polish.
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
-            Real projects, real results. See how our 8 comprehensive solutions have helped businesses transform their digital presence and achieve remarkable growth.
+          <p className="mt-5 text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8">
+            A snapshot of outcomes across design, development, marketing, and AI automation — built to look great and perform fast.
           </p>
 
           {/* Category filters */}
@@ -96,10 +107,10 @@ const Portfolio: React.FC = () => {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                className={`px-5 py-2.5 rounded-full font-semibold transition-all duration-300 ${
                   selectedCategory === category
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
+                    ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-lg shadow-blue-500/20 dark:shadow-blue-400/10'
+                    : 'glass glass-hover text-slate-700 dark:text-slate-200'
                 }`}
               >
                 {category}
@@ -111,40 +122,42 @@ const Portfolio: React.FC = () => {
         {/* Projects grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {filteredProjects.map((project) => (
-            <div key={project.id} className="group bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="relative overflow-hidden">
+            <div key={project.id} className="group glass glass-hover rounded-3xl overflow-hidden">
+              <div className="relative overflow-hidden h-60">
                 <img 
                   src={project.image} 
                   alt={project.title}
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button className="bg-white/20 backdrop-blur-sm text-white p-2 rounded-lg hover:bg-white/30 transition-colors duration-300">
-                    <ExternalLink className="h-5 w-5" />
-                  </button>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
               </div>
               
               <div className="p-6">
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tags.map((tag, tagIndex) => (
-                    <span key={tagIndex} className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 px-2 py-1 rounded-full font-medium">
+                    <span
+                      key={tagIndex}
+                      className="text-xs px-2.5 py-1 rounded-full font-semibold glass text-slate-700 dark:text-slate-200"
+                    >
                       {tag}
                     </span>
                   ))}
                 </div>
                 
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">
                   {project.title}
                 </h3>
                 
-                <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                <p className="text-slate-600 dark:text-slate-300 mb-5 line-clamp-3">
                   {project.description}
                 </p>
                 
-                <button className="flex items-center text-blue-600 dark:text-blue-400 font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
-                  View Project
+                <button
+                  onClick={scrollToContact}
+                  className="inline-flex items-center text-blue-700 dark:text-blue-300 font-semibold hover:text-blue-800 dark:hover:text-blue-200 transition-colors duration-300"
+                >
+                  Request details
                   <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
                 </button>
               </div>
@@ -154,8 +167,11 @@ const Portfolio: React.FC = () => {
 
         {/* CTA */}
         <div className="text-center">
-          <button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
-            View All Projects
+          <button
+            onClick={scrollToContact}
+            className="inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 shadow-lg shadow-blue-500/20 dark:shadow-blue-400/10 transition-all duration-300"
+          >
+            Get a tailored proposal
           </button>
         </div>
       </div>
