@@ -172,7 +172,10 @@ const Services: React.FC = () => {
                 Book a consultation
               </button>
               <button
-                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => {
+                  window.location.hash = '#/case-studies';
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 className="inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-semibold text-slate-900 dark:text-white glass glass-hover"
               >
                 See recent work

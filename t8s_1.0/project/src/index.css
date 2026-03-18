@@ -60,4 +60,63 @@
       radial-gradient(900px 500px at 80% 20%, rgba(168, 85, 247, 0.18), transparent 55%),
       radial-gradient(900px 520px at 50% 100%, rgba(16, 185, 129, 0.16), transparent 55%);
   }
+
+  .loader-spin {
+    animation: loaderSpin 1.05s linear infinite;
+  }
+
+  .loader-dot {
+    animation: loaderDot 900ms ease-in-out infinite;
+  }
+
+  .loader-dot-2 {
+    animation-delay: 120ms;
+  }
+
+  .loader-dot-3 {
+    animation-delay: 240ms;
+  }
+
+  .loader-bar {
+    animation: loaderBar 1.1s ease-in-out infinite;
+    transform: translateX(-120%);
+  }
+}
+
+@keyframes loaderSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loaderBar {
+  0% {
+    transform: translateX(-120%);
+  }
+  60% {
+    transform: translateX(185%);
+  }
+  100% {
+    transform: translateX(185%);
+  }
+}
+
+@keyframes loaderDot {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-spin,
+  .loader-bar,
+  .loader-dot {
+    animation: none !important;
+  }
 }

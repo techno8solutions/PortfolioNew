@@ -1,88 +1,21 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+import CaseStudyModal from './CaseStudyModal';
+import { caseStudies, caseStudyCategories, type CaseStudy } from '../data/caseStudies';
 
 const Portfolio: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [active, setActive] = useState<CaseStudy | null>(null);
 
-  const scrollToContact = () => {
-    const element = document.getElementById('contact');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const filtered = useMemo(() => {
+    if (selectedCategory === 'All') return caseStudies;
+    return caseStudies.filter((c) => c.category === selectedCategory);
+  }, [selectedCategory]);
+
+  const goToCaseStudiesPage = () => {
+    window.location.hash = '#/case-studies';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  const projects = [
-    {
-      id: 1,
-      title: "TechCorp Solutions",
-      category: "Web Development",
-      tags: ["CORPORATE", "FULL-STACK", "RESPONSIVE", "CMS"],
-      image: "https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "Complete corporate website with custom CMS, advanced analytics, and seamless user experience across all devices."
-    },
-    {
-      id: 2,
-      title: "ShopEasy Mobile App",
-      category: "Mobile App",
-      tags: ["REACT NATIVE", "E-COMMERCE", "iOS", "ANDROID"],
-      image: "https://images.pexels.com/photos/147413/twitter-facebook-together-exchange-of-information-147413.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "Cross-platform e-commerce mobile app with seamless shopping experience and integrated payment gateway."
-    },
-    {
-      id: 3,
-      title: "GrowthHack Campaign",
-      category: "Digital Marketing",
-      tags: ["SEO", "PPC", "ANALYTICS", "CONVERSION"],
-      image: "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "Comprehensive digital marketing campaign that increased client's online visibility by 300% and doubled conversions."
-    },
-    {
-      id: 4,
-      title: "Viral Social Campaign",
-      category: "Social Media Marketing",
-      tags: ["INSTAGRAM", "FACEBOOK", "CONTENT", "ENGAGEMENT"],
-      image: "https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "Social media campaign that achieved 2M+ impressions and 150% follower growth across multiple platforms."
-    },
-    {
-      id: 5,
-      title: "Interactive Dashboard",
-      category: "Frontend Development",
-      tags: ["REACT", "DASHBOARD", "REAL-TIME", "UI/UX"],
-      image: "https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "Modern React-based dashboard with real-time data visualization and intuitive user interface design."
-    },
-    {
-      id: 6,
-      title: "ScaleAPI Backend",
-      category: "Backend Development",
-      tags: ["NODE.JS", "API", "DATABASE", "CLOUD"],
-      image: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "Robust backend API system handling 10K+ requests per minute with advanced security and scalability features."
-    },
-    {
-      id: 7,
-      title: "FinanceFlow UX",
-      category: "UI/UX Design",
-      tags: ["FIGMA", "USER RESEARCH", "PROTOTYPING", "TESTING"],
-      image: "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "Complete UX redesign for fintech app resulting in 40% increase in user engagement and 25% reduction in support tickets."
-    },
-    {
-      id: 8,
-      title: "SmartBot AI Assistant",
-      category: "AI Solutions",
-      tags: ["CHATBOT", "MACHINE LEARNING", "NLP", "AUTOMATION"],
-      image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "AI-powered customer service chatbot with natural language processing, reducing response time by 80%."
-    }
-  ];
-
-  const categories = ['All', 'Web Development', 'Mobile App', 'Digital Marketing', 'Social Media Marketing', 'Frontend Development', 'Backend Development', 'UI/UX Design', 'AI Solutions'];
-
-  const filteredProjects = selectedCategory === 'All'
-    ? projects 
-    : projects.filter(project => project.category === selectedCategory);
 
   return (
     <section id="projects" className="py-20">
@@ -103,7 +36,7 @@ const Portfolio: React.FC = () => {
 
           {/* Category filters */}
           <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((category) => (
+            {caseStudyCategories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
@@ -121,8 +54,8 @@ const Portfolio: React.FC = () => {
 
         {/* Projects grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {filteredProjects.map((project) => (
-            <div key={project.id} className="group glass glass-hover rounded-3xl overflow-hidden">
+          {filtered.map((project) => (
+            <div key={project.slug} className="group glass glass-hover rounded-3xl overflow-hidden">
               <div className="relative overflow-hidden h-60">
                 <img 
                   src={project.image} 
@@ -150,11 +83,11 @@ const Portfolio: React.FC = () => {
                 </h3>
                 
                 <p className="text-slate-600 dark:text-slate-300 mb-5 line-clamp-3">
-                  {project.description}
+                  {project.summary}
                 </p>
                 
                 <button
-                  onClick={scrollToContact}
+                  onClick={() => setActive(project)}
                   className="inline-flex items-center text-blue-700 dark:text-blue-300 font-semibold hover:text-blue-800 dark:hover:text-blue-200 transition-colors duration-300"
                 >
                   Request details
@@ -168,12 +101,18 @@ const Portfolio: React.FC = () => {
         {/* CTA */}
         <div className="text-center">
           <button
-            onClick={scrollToContact}
+            onClick={goToCaseStudiesPage}
             className="inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 shadow-lg shadow-blue-500/20 dark:shadow-blue-400/10 transition-all duration-300"
           >
-            Get a tailored proposal
+            View all case studies
           </button>
         </div>
+
+        <CaseStudyModal
+          caseStudy={active}
+          isOpen={Boolean(active)}
+          onClose={() => setActive(null)}
+        />
       </div>
     </section>
   );

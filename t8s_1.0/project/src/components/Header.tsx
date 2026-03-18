@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/useTheme';
 
-const Header: React.FC = () => {
+type Route = 'home' | 'case-studies';
+
+type Props = {
+  route: Route;
+  navigate: (route: Route) => void;
+};
+
+const Header: React.FC<Props> = ({ route, navigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { isDark, toggleTheme } = useTheme();
@@ -16,6 +23,12 @@ const Header: React.FC = () => {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
+    if (route !== 'home') {
+      sessionStorage.setItem('scrollTo', sectionId);
+      navigate('home');
+      setIsMenuOpen(false);
+      return;
+    }
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -30,11 +43,18 @@ const Header: React.FC = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex-shrink-0">
+        <div className="flex items-center h-16 gap-3">
+          <div className="flex items-center flex-1 min-w-0">
             <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="text-left"
+              onClick={() => {
+                if (route !== 'home') {
+                  sessionStorage.setItem('scrollTo', 'top');
+                  navigate('home');
+                  return;
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="text-left min-w-0"
               aria-label="Go to top"
             >
               <div className="text-xl sm:text-2xl font-bold text-gradient">
@@ -46,22 +66,48 @@ const Header: React.FC = () => {
             </button>
           </div>
 
-          <nav className="hidden md:block">
-            <ul className="flex items-center space-x-2">
-              {['About', 'Services', 'Projects', 'Contact'].map((item) => (
-                <li key={item}>
-                  <button
-                    onClick={() => scrollToSection(item.toLowerCase())}
-                    className="px-4 py-2 rounded-full text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white glass hover:bg-white/20 dark:hover:bg-white/10 transition-colors duration-300 font-medium"
-                  >
-                    {item}
-                  </button>
-                </li>
-              ))}
+          <nav className="hidden md:flex items-center justify-center">
+            <ul className="glass-strong shadow-glass rounded-full px-2 py-1 flex items-center gap-1">
+              <li>
+                <button
+                  onClick={() => scrollToSection('about')}
+                  className="px-4 py-2 rounded-full text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-white/20 dark:hover:bg-white/10 transition-colors duration-300"
+                >
+                  About
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection('services')}
+                  className="px-4 py-2 rounded-full text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-white/20 dark:hover:bg-white/10 transition-colors duration-300"
+                >
+                  Services
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigate('case-studies')}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300 ${
+                    route === 'case-studies'
+                      ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-lg shadow-blue-500/20 dark:shadow-blue-400/10'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-white/20 dark:hover:bg-white/10'
+                  }`}
+                >
+                  Case Studies
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection('contact')}
+                  className="px-4 py-2 rounded-full text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-white/20 dark:hover:bg-white/10 transition-colors duration-300"
+                >
+                  Contact
+                </button>
+              </li>
             </ul>
           </nav>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center justify-end flex-1 space-x-3">
             <button
               onClick={() => scrollToSection('contact')}
               className="hidden sm:inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 shadow-lg shadow-blue-500/20 dark:shadow-blue-400/10 transition-all duration-300"
@@ -98,15 +144,37 @@ const Header: React.FC = () => {
           <div className="md:hidden absolute top-full left-0 right-0 p-4">
             <div className="glass-strong rounded-2xl p-3 shadow-glass">
               <nav className="space-y-1">
-                {['About', 'Services', 'Projects', 'Contact'].map((item) => (
-                  <button
-                    key={item}
-                    onClick={() => scrollToSection(item.toLowerCase())}
-                    className="block w-full text-left px-4 py-3 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-white/20 dark:hover:bg-white/10 transition-colors duration-300 font-medium"
-                  >
-                    {item}
-                  </button>
-                ))}
+                <button
+                  onClick={() => scrollToSection('about')}
+                  className="block w-full text-left px-4 py-3 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-white/20 dark:hover:bg-white/10 transition-colors duration-300 font-medium"
+                >
+                  About
+                </button>
+                <button
+                  onClick={() => scrollToSection('services')}
+                  className="block w-full text-left px-4 py-3 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-white/20 dark:hover:bg-white/10 transition-colors duration-300 font-medium"
+                >
+                  Services
+                </button>
+                <button
+                  onClick={() => {
+                    navigate('case-studies');
+                    setIsMenuOpen(false);
+                  }}
+                  className={`block w-full text-left px-4 py-3 rounded-xl transition-colors duration-300 font-medium ${
+                    route === 'case-studies'
+                      ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-white/20 dark:hover:bg-white/10'
+                  }`}
+                >
+                  Case Studies
+                </button>
+                <button
+                  onClick={() => scrollToSection('contact')}
+                  className="block w-full text-left px-4 py-3 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-white/20 dark:hover:bg-white/10 transition-colors duration-300 font-medium"
+                >
+                  Contact
+                </button>
                 <button
                   onClick={() => scrollToSection('contact')}
                   className="mt-2 w-full rounded-xl px-4 py-3 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 transition-all duration-300"

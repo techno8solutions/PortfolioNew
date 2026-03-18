@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Quick Links</h4>
             <ul className="space-y-3">
-              {['About', 'Services', 'Projects', 'Contact'].map((link) => (
+              {['About', 'Services', 'Contact'].map((link) => (
                 <li key={link}>
                   <button
                     onClick={() => scrollToSection(link.toLowerCase())}
@@ -55,6 +55,14 @@ const Footer: React.FC = () => {
                   </button>
                 </li>
               ))}
+              <li>
+                <a
+                  href="#/case-studies"
+                  className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors duration-300"
+                >
+                  Case Studies
+                </a>
+              </li>
             </ul>
           </div>
 
