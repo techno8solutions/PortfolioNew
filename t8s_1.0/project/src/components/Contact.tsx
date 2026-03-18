@@ -16,6 +16,8 @@ const Contact: React.FC = () => {
     ...defaultFormData
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -24,11 +26,39 @@ const Contact: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setFormData(defaultFormData);
-    setTimeout(() => setIsSubmitted(false), 3000);
+    setSubmitError(null);
+
+    const endpoint = import.meta.env.VITE_GOOGLE_SHEETS_WEBAPP_URL as string | undefined;
+    if (!endpoint) {
+      setSubmitError('Missing Google Sheets endpoint. Set VITE_GOOGLE_SHEETS_WEBAPP_URL in .env.local.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const payload = {
+        ...formData,
+        pageUrl: window.location.href,
+        userAgent: navigator.userAgent,
+      };
+
+      await fetch(endpoint, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      setIsSubmitted(true);
+      setFormData(defaultFormData);
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } catch {
+      setSubmitError('Could not submit the form. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -246,11 +276,11 @@ const Contact: React.FC = () => {
 
               <button
                 type="submit"
-                disabled={isSubmitted}
+                disabled={isSubmitted || isSubmitting}
                 className={`w-full py-4 px-6 rounded-2xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 ${
                   isSubmitted
                     ? 'bg-emerald-500 text-white'
-                    : 'bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white hover:shadow-lg transform hover:-translate-y-0.5'
+                    : 'bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0'
                 }`}
               >
                 {isSubmitted ? (
@@ -258,6 +288,8 @@ const Contact: React.FC = () => {
                     <CheckCircle className="h-5 w-5" />
                     <span>Message Sent!</span>
                   </>
+                ) : isSubmitting ? (
+                  <span>Sending…</span>
                 ) : (
                   <>
                     <span>Send Message</span>
@@ -265,6 +297,12 @@ const Contact: React.FC = () => {
                   </>
                 )}
               </button>
+
+              {submitError && (
+                <div className="mt-4 rounded-2xl px-4 py-3 glass text-sm text-rose-700 dark:text-rose-200">
+                  {submitError}
+                </div>
+              )}
             </form>
           </div>
         </div>
