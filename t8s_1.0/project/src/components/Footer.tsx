@@ -57,6 +57,14 @@ const Footer: React.FC = () => {
               ))}
               <li>
                 <a
+                  href="#/services"
+                  className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors duration-300"
+                >
+                  Services Page
+                </a>
+              </li>
+              <li>
+                <a
                   href="#/case-studies"
                   className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors duration-300"
                 >

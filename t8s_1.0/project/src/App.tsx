@@ -1,19 +1,21 @@
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import Portfolio from './components/Portfolio';
-import About from './components/About';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
 import LoadingScreen from './components/LoadingScreen';
 import { ThemeProvider } from './context/ThemeContext';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Hero from './components/Hero';
+import About from './components/About';
+import Services from './components/Services';
+import Portfolio from './components/Portfolio';
+import Contact from './components/Contact';
 import CaseStudiesPage from './pages/CaseStudiesPage';
+import ServicesPage from './pages/ServicesPage';
 import { useEffect, useState } from 'react';
 
-type Route = 'home' | 'case-studies';
+type Route = 'home' | 'case-studies' | 'services';
 
 const getRouteFromHash = (hash: string): Route => {
   if (hash.startsWith('#/case-studies')) return 'case-studies';
+  if (hash.startsWith('#/services')) return 'services';
   return 'home';
 };
 
@@ -41,7 +43,8 @@ function App() {
   }, [route]);
 
   const navigate = (next: Route) => {
-    window.location.hash = next === 'home' ? '#/' : '#/case-studies';
+    window.location.hash =
+      next === 'home' ? '#/' : next === 'case-studies' ? '#/case-studies' : '#/services';
   };
 
   return (
@@ -62,8 +65,17 @@ function App() {
               <Portfolio />
               <Contact />
             </>
-          ) : (
+          ) : route === 'case-studies' ? (
             <CaseStudiesPage onBackHome={() => navigate('home')} />
+          ) : (
+            <ServicesPage
+              onBackHome={() => navigate('home')}
+              onRequestQuote={(service) => {
+                sessionStorage.setItem('prefillService', service.contactValue);
+                sessionStorage.setItem('scrollTo', 'contact');
+                navigate('home');
+              }}
+            />
           )}
         </main>
 

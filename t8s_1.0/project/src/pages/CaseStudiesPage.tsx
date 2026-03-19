@@ -80,7 +80,7 @@ const CaseStudiesPage: React.FC<Props> = ({ onBackHome }) => {
           {filtered.map((c) => (
             <div key={c.slug} className="group glass glass-hover rounded-3xl overflow-hidden">
               <div className="relative h-56">
-                <img src={c.image} alt={c.title} className="h-full w-full object-cover" loading="lazy" />
+                <img src={c.image} alt={c.title} className="h-full w-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute bottom-4 left-5 right-5">
                   <div className="inline-flex items-center rounded-full px-3 py-1.5 glass text-white/90 text-xs font-semibold">

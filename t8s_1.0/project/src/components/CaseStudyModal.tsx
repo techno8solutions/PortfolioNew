@@ -104,7 +104,6 @@ const CaseStudyModal: React.FC<Props> = ({ caseStudy, isOpen, onClose }) => {
               src={caseStudy.image}
               alt={caseStudy.title}
               className="h-full w-full object-cover"
-              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/useTheme';
 
-type Route = 'home' | 'case-studies';
+type Route = 'home' | 'case-studies' | 'services';
 
 type Props = {
   route: Route;
@@ -78,8 +78,12 @@ const Header: React.FC<Props> = ({ route, navigate }) => {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('services')}
-                  className="px-4 py-2 rounded-full text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-white/20 dark:hover:bg-white/10 transition-colors duration-300"
+                  onClick={() => navigate('services')}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300 ${
+                    route === 'services'
+                      ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-lg shadow-blue-500/20 dark:shadow-blue-400/10'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-white/20 dark:hover:bg-white/10'
+                  }`}
                 >
                   Services
                 </button>
@@ -151,8 +155,15 @@ const Header: React.FC<Props> = ({ route, navigate }) => {
                   About
                 </button>
                 <button
-                  onClick={() => scrollToSection('services')}
-                  className="block w-full text-left px-4 py-3 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-white/20 dark:hover:bg-white/10 transition-colors duration-300 font-medium"
+                  onClick={() => {
+                    navigate('services');
+                    setIsMenuOpen(false);
+                  }}
+                  className={`block w-full text-left px-4 py-3 rounded-xl transition-colors duration-300 font-medium ${
+                    route === 'services'
+                      ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-white/20 dark:hover:bg-white/10'
+                  }`}
                 >
                   Services
                 </button>

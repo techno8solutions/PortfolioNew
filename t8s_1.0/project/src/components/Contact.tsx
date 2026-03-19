@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Phone, Mail, MapPin, Send, CheckCircle } from 'lucide-react';
 
 const Contact: React.FC = () => {
@@ -18,6 +18,13 @@ const Contact: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const prefillService = sessionStorage.getItem('prefillService');
+    if (!prefillService) return;
+    sessionStorage.removeItem('prefillService');
+    setFormData((prev) => ({ ...prev, service: prefillService }));
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
