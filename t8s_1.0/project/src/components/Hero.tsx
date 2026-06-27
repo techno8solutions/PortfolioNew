@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import ParticleWave from './ParticleWave';
 
 const Hero: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -50,9 +51,9 @@ const Hero: React.FC = () => {
         />
       </div>
 
-      {/* Grid Pattern Background */}
-      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:32px_32px] opacity-40"></div>
-      <div className="absolute inset-0 z-0 bg-gradient-to-t from-slate-50 via-transparent to-slate-50"></div>
+      {/* Dynamic Particle Wave Background */}
+      <ParticleWave />
+      <div className="absolute inset-0 z-[1] bg-gradient-to-t from-slate-50 via-transparent to-transparent opacity-60 pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
         <div 
