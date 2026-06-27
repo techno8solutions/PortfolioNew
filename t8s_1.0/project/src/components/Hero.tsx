@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
-import ParticleWave from './ParticleWave';
+import { DottedSurface } from './ui/dotted-surface';
 
 const Hero: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -51,8 +51,8 @@ const Hero: React.FC = () => {
         />
       </div>
 
-      {/* Dynamic Particle Wave Background */}
-      <ParticleWave />
+      {/* Dynamic Three.js Dotted Surface Background */}
+      <DottedSurface className="absolute inset-0 z-0" />
       <div className="absolute inset-0 z-[1] bg-gradient-to-t from-slate-50 via-transparent to-transparent opacity-60 pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">

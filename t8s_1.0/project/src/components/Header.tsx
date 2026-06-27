@@ -57,8 +57,8 @@ const Header: React.FC<Props> = ({ route, navigate }) => {
               className="text-left min-w-0"
               aria-label="Go to top"
             >
-              <div className="text-xl font-bold text-slate-900 tracking-tight">
-                Techno8solutions
+              <div className="flex items-center">
+                <img src="/assets/logo2.png" alt="Techno8solutions" className="h-8 w-auto" />
               </div>
             </button>
           </div>
