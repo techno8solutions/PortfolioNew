@@ -3,6 +3,20 @@ import { ArrowRight } from 'lucide-react';
 import CaseStudyModal from './CaseStudyModal';
 import { caseStudies, caseStudyCategories, type CaseStudy } from '../data/caseStudies';
 
+const getGridClass = (index: number, total: number) => {
+  // Graceful fallback for filtered views with few items
+  if (total < 4) return 'col-span-1 md:col-span-1 min-h-[400px]';
+  
+  // Bento Grid Pattern for 8 items
+  const pattern = index % 8;
+  if (pattern === 0) return 'col-span-1 md:col-span-2 md:row-span-2 min-h-[400px] md:min-h-[832px]'; // Huge hero block
+  if (pattern === 4 || pattern === 5) return 'col-span-1 md:col-span-2 md:row-span-1 min-h-[400px]'; // Wide blocks
+  if (pattern === 7) return 'col-span-1 md:col-span-3 md:row-span-1 min-h-[400px] md:min-h-[500px]'; // Panoramic bottom block
+  
+  // Standard square blocks
+  return 'col-span-1 md:col-span-1 md:row-span-1 min-h-[400px]';
+};
+
 const Portfolio: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [active, setActive] = useState<CaseStudy | null>(null);
@@ -22,28 +36,28 @@ const Portfolio: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center mb-14">
-          <div className="inline-flex items-center rounded-full px-4 py-2 glass">
-            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+          <div className="inline-flex items-center rounded-full px-4 py-2 bg-white border border-slate-200 shadow-sm">
+            <span className="text-sm font-semibold text-slate-800">
               Selected work
             </span>
           </div>
-          <h2 className="mt-6 text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">
+          <h2 className="mt-6 text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
             Case studies with premium polish.
           </h2>
-          <p className="mt-5 text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8">
+          <p className="mt-5 text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto mb-8">
             A snapshot of outcomes across design, development, marketing, and AI automation — built to look great and perform fast.
           </p>
 
           {/* Category filters */}
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-3">
             {caseStudyCategories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 className={`px-5 py-2.5 rounded-full font-semibold transition-all duration-300 ${
                   selectedCategory === category
-                    ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-lg shadow-blue-500/20 dark:shadow-blue-400/10'
-                    : 'glass glass-hover text-slate-700 dark:text-slate-200'
+                    ? 'bg-slate-900 text-white shadow-sm'
+                    : 'bg-white border border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50'
                 }`}
               >
                 {category}
@@ -52,56 +66,67 @@ const Portfolio: React.FC = () => {
           </div>
         </div>
 
-        {/* Projects grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {filtered.map((project) => (
-            <div key={project.slug} className="group glass glass-hover rounded-3xl overflow-hidden">
-              <div className="relative overflow-hidden h-60">
-                <img 
-                  src={project.image} 
-                  alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
-              </div>
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(0,1fr)] mb-12">
+          {filtered.map((project, index) => (
+            <div
+              key={project.slug}
+              className={`group relative rounded-3xl overflow-hidden bg-slate-900 ${getGridClass(index, filtered.length)}`}
+            >
+              {/* Immersive Background Image */}
+              <img 
+                src={project.image} 
+                alt={project.title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-90 group-hover:opacity-100"
+              />
               
-              <div className="p-6">
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag, tagIndex) => (
-                    <span
-                      key={tagIndex}
-                      className="text-xs px-2.5 py-1 rounded-full font-semibold glass text-slate-700 dark:text-slate-200"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+              {/* Premium Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 transition-opacity duration-500 group-hover:via-black/50" />
+              
+              {/* Content Box */}
+              <div className="absolute inset-0 p-8 flex flex-col justify-end text-left z-10 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <div className="mb-auto flex justify-between items-start opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                  <div className="inline-flex items-center rounded-full px-3 py-1.5 bg-white/10 backdrop-blur-md text-white/90 text-xs font-semibold border border-white/20">
+                    {project.category}
+                  </div>
+                  <button
+                    onClick={() => setActive(project)}
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white text-slate-900 hover:bg-slate-100 transition-colors shadow-lg"
+                  >
+                    <ArrowRight className="h-5 w-5 -rotate-45" />
+                  </button>
                 </div>
                 
-                <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">
-                  {project.title}
-                </h3>
-                
-                <p className="text-slate-600 dark:text-slate-300 mb-5 line-clamp-3">
-                  {project.summary}
-                </p>
-                
-                <button
-                  onClick={() => setActive(project)}
-                  className="inline-flex items-center text-blue-700 dark:text-blue-300 font-semibold hover:text-blue-800 dark:hover:text-blue-200 transition-colors duration-300"
-                >
-                  Request details
-                  <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-                </button>
+                <div>
+                  <div className="flex flex-wrap gap-2 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150">
+                    {project.tags.slice(0, 3).map((tag, tagIndex) => (
+                      <span
+                        key={tagIndex}
+                        className="text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-white/20 backdrop-blur-md text-white/90 font-bold border border-white/10"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <h3 className="text-3xl font-bold text-white mb-2 leading-tight">
+                    {project.title}
+                  </h3>
+                  
+                  <p className="text-slate-300 font-medium line-clamp-2 max-w-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
+                    {project.summary}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
         {/* CTA */}
-        <div className="text-center">
+        <div className="text-center mt-16">
           <button
             onClick={goToCaseStudiesPage}
-            className="inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 shadow-lg shadow-blue-500/20 dark:shadow-blue-400/10 transition-all duration-300"
+            className="inline-flex items-center justify-center rounded-xl px-8 py-4 text-base font-semibold text-white bg-slate-900 hover:bg-slate-800 transition-all duration-300 shadow-sm"
           >
             View all case studies
           </button>

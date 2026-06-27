@@ -1,4 +1,5 @@
 import LoadingScreen from './components/LoadingScreen';
+import ScrollToTop from './components/ScrollToTop';
 import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -80,6 +81,7 @@ function App() {
         </main>
 
         <Footer />
+        <ScrollToTop />
       </div>
     </ThemeProvider>
   );
